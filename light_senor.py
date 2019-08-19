@@ -5,8 +5,8 @@ def light(sensor = 0):
 	pinMode(sensor, "INPUT")
 
 	try:
-		print(analogRead(sensor))
+		return analogRead(sensor)
 	except Exception as err:
-		print(err)
+		return err
 	finally:
 		print("Finished Read")

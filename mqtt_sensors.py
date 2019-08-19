@@ -24,16 +24,21 @@ def on_message(client, userdata, message):
     print("recived message")
     sleep(1)
     message = str(message.payload.decode("utf-8").strip())
+    #q = 'quit'
+    #try:
+    #    print(type(message), type(q), id(message), id(q))
+    #except Exception as err:
+    #    print(err)
     try:
-        print(message is "quit", message is "light", message is "temp")
-        if message is "quit":
+        #print(message == 'quit', message is "light", message is "temp")
+        if message == "quit":
             print("setting flag to false")
             global flag
             flag = False
-        elif message is "light":
+        elif message == "light":
             print("getting light")
             client.publish(pub_topic, light())
-        elif message is "temp":
+        elif message == "temp":
             print("getting temp")
             client.publish(pub_topic, temp())
         else:
