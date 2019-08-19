@@ -10,6 +10,7 @@ try:
 	flag = True
 	#define callback
 	def on_message(client, userdata, message):
+		print(type(message))
 		try:
 			#print(type(client))
 			print(f"client is  {client._client_id}")
@@ -19,6 +20,7 @@ try:
 		print("HERE")
 		
 		message = str(message.payload.decode("utf-8"))
+		
 		print(message=='bye', message, type(message))
 		if message is 'bye' or message == '9':
 			print("Made it in")

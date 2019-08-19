@@ -1,13 +1,12 @@
 import paho.mqtt.client as mqtt
-import time
-from cottage_work.mqtt_pi.light_sensor import light
-from cottage_work.mqtt_pi.temp_sensor import temp
+from time import sleep
+from light_senor import light
+from temp_sensor import temp
 
 actions = {
-0 : light,
-1 : temp,
-2 : None
-3 : "quit"
+"light" : light,
+"temp" : temp,
+"quit" : "quit"
 }
 
 global flag
@@ -21,16 +20,22 @@ broker, sub_list, client = start_client()
 pub_topic = sub_list[0]
 sub_topic = sub_list[1]
 
-def on_message(client, userdata, message, pub_topic):
+def on_message(client, userdata, message):
+    print("recived message")
     sleep(1)
-    message = message.payload.decode("utf-8")
+    message = str(message.payload.decode("utf-8").strip())
     try:
-        action = actions[message]
-        if action is "quit":
+        print(message is "quit", message is "light", message is "temp")
+        if message is "quit":
+            print("setting flag to false")
             global flag
             flag = False
-        if action:
-            client.publish(pub_topic, action())
+        elif message is "light":
+            print("getting light")
+            client.publish(pub_topic, light())
+        elif message is "temp":
+            print("getting temp")
+            client.publish(pub_topic, temp())
         else:
             client.publish(pub_topic, f"{message} was recived on pi")
     except Exception as err:
@@ -40,7 +45,7 @@ def on_message(client, userdata, message, pub_topic):
 
 def on_connect(client, userdata, flags, rc):
     sleep(1)
-    print(f"{client._client_id} has connected {rc}, flags are {flags"}
+    print(f"{client._client_id} has connected {rc}, flags are {flags}")
 
 def on_disconnect(client, userdata, rc):
     sleep(1)
@@ -58,9 +63,10 @@ sleep(1)
 print(f"listening on {sub_topic}")
 client.subscribe(sub_topic)
 
-print(f"returning info on {pub_topic})
+print(f"returning info on {pub_topic}")
 while flag:
-    time.sleep(10)
+    client.publish(pub_topic, "Here\n")
+    sleep(1)
 
 print("Closing Temp/Light Client")
 sleep(1)
