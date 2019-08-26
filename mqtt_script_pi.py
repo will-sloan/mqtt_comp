@@ -3,7 +3,7 @@ import time
 import paho.mqtt.client as paho
 #broker="broker.hivemq.com"
 try:
-	broker = "192.168.2.45"
+	broker = "192.168.2.41"
 
 	sub_list = ["topic1", "topic2"]
 	global flag 

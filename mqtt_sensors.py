@@ -12,7 +12,7 @@ actions = {
 global flag
 flag = True
 
-def start_client(broker='192.168.2.45', sub_list=['other', 'info'], client_name='client-002'):
+def start_client(broker='192.168.2.41', sub_list=['topic1', 'topic2'], client_name='client-002'):
     return broker, sub_list, mqtt.Client(client_name)
 
 broker, sub_list, client = start_client()
